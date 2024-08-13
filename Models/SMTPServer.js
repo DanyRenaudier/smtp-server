@@ -1,3 +1,4 @@
+const { readFileSync } = require('node:fs');
 const smtp_server = require("smtp-server").SMTPServer;
 
 class SMTPServer {
@@ -9,8 +10,10 @@ class SMTPServer {
     config() {
         return {
             secure: true,
-            requestCer: true,
+            requestCert: true,
             size: 500,
+            cert: readFileSync('./credentials/server/ryans-cert.pem'),
+            key: readFileSync('./credentials/server/ryans-key.pem')
         }
     }
 
