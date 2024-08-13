@@ -5,6 +5,8 @@ class Transporter{
     constructor(){
         this.options = options()
         this.connection = new SMTPConnection(this.options)
+        
+        this.openConnection()
     }
 
     async options(){
@@ -31,10 +33,23 @@ class Transporter{
     }
 
     openConnection(){
-
+        try {
+            this.connection.connect((error)=>{
+                if(error){
+                    console.log(error);
+                }
+            })
+            console.log('connection stablished')
+        } catch (error) {
+            throw new Error(error)
+        }
     }
 
     closeConenection(){
 
     }
+}
+
+module.exports = {
+    Transporter
 }
