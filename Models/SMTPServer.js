@@ -8,7 +8,8 @@ class SMTPServer {
 
     config() {
         return {
-            secure: false,
+            secure: true,
+            requestCer: true,
             size: 500,
         }
     }
