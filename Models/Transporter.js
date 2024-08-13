@@ -17,8 +17,8 @@ class Transporter{
                 host: String(host),
                 rejectUnauthorized: true,
                 tls:{
-                    cert: fs.readFileSync(),
-                    key: fs.readFileSync()
+                    cert: fs.readFileSync('./credentials/transporter/ryans-cert.pem'),
+                    key: fs.readFileSync('./credentials/transporter/ryans-key.pem')
                 }
             }
         } catch (error) {
