@@ -1,4 +1,8 @@
-const {Transporter} = require('./Models/Transporter');
+require('dotenv').config()
+const { ip } = require('./helpers/mailer')
+const {transporterInstance} = require('./Models/Transporter');
 
-const transporter = new Transporter();
+(async()=>{
+    const transporter = await transporterInstance()
+})()
 

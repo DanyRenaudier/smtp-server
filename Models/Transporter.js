@@ -1,55 +1,64 @@
-const { ip } = require('../helpers/mailer')
+
+const { readFileSync } = require('node:fs');
 const SMTPConnection = require("nodemailer/lib/smtp-connection");
 
-class Transporter{
-    constructor(){
-        this.options = options()
-        this.connection = new SMTPConnection(this.options)
-        
+
+class Transporter {
+    constructor(ip) {
+        this.connection = new SMTPConnection(this.options(ip))
+        this.credentials={
+            cert: readFileSync('./credentials/transporter/ryans-cert.pem'),
+            key: readFileSync('./credentials/transporter/ryans-key.pem')
+        }
+
+        //Methods call
         this.openConnection()
     }
 
-    async options(){
+    options(ip) {
         try {
-            let host = await ip() || "127.0.0.1";
-            if(!host) Throw
-            return{
+            let host = ip || "127.0.0.1";
+            console.log(ip)
+            return {
                 port: process.env.PORT,
                 secure: true,
-                host: String(host),
+                host,
                 rejectUnauthorized: true,
-                tls:{
-                    cert: fs.readFileSync('./credentials/transporter/ryans-cert.pem'),
-                    key: fs.readFileSync('./credentials/transporter/ryans-key.pem')
-                }
+                greetingTimeout :5000,
+                socketTimeout :60000,
             }
         } catch (error) {
             console.log(error)
         }
     }
 
-    send(){
+    // send() {
 
-    }
+    // }
 
-    openConnection(){
+    openConnection() {
         try {
-            this.connection.connect((error)=>{
-                if(error){
-                    console.log(error);
-                }
+            this.connection.connect(() => {
+                console.log('Connection succeed!')
+                this.connection.login(this.credentials,()=>{
+                    console.log('Connection Authenticated');
+                })
             })
-            console.log('connection stablished')
         } catch (error) {
-            throw new Error(error)
+            throw new Error(error);
         }
     }
 
-    closeConenection(){
+    // closeConenection() {
 
-    }
+    // }
+}
+
+transporterInstance = async (ip=false) => {
+    let transporter = new Transporter(ip ? host = await ip() : false)
+    return transporter
 }
 
 module.exports = {
-    Transporter
+    transporterInstance
 }
