@@ -11,9 +11,10 @@ class SMTPServer {
         return {
             secure: true,
             requestCert: true,
-            size: 500,
-            cert: readFileSync('./credentials/server/ryans-cert.pem'),
-            key: readFileSync('./credentials/server/ryans-key.pem')
+            key: readFileSync("./credentials/server/server.key"),
+            cert: readFileSync('./credentials/server/server.crt'),
+            ca: readFileSync('./credentials/server/server.csr'),
+            size: 500
         }
     }
 
