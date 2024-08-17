@@ -11,7 +11,7 @@
   "version": "1.0.0",
   "main": "mailer.js",
   "scripts": {
-    "start": "nodemon main.js"
+    "start": ""
   },
   "keywords": [],
   "author": "",
