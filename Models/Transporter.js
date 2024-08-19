@@ -1,4 +1,3 @@
-
 const { readFileSync } = require('node:fs');
 const SMTPConnection = require("nodemailer/lib/smtp-connection");
 
@@ -11,9 +10,6 @@ class Transporter {
             cert: readFileSync('./credentials/client/client.crt'),
             // ca: readFileSync('./credentials/client/client.csr'),
         }
-
-        //Methods call
-        this.openConnection()
     }
 
     options(ip) {
@@ -34,12 +30,21 @@ class Transporter {
         }
     }
 
-    // send() {
-
-    // }
-
-    openConnection() {
+    send(envelope, message) {
         try {
+            this.connection.send(envelope, message, (info) => {
+                console.log(info)
+            })
+        }
+        catch (error) {
+            console.log(error)
+            throw new Error(`Check the logs, message couldn't be sent :(`)
+        }
+    }
+
+    async openConnection() {
+        try {
+            //put the connection / login into a promise to be fullfilled before attempting to send the email 
             this.connection.connect(() => {
                 console.log('Connection succeed!')
                 this.connection.login(this.credentials, () => {
@@ -58,6 +63,7 @@ class Transporter {
 
 transporterInstance = async (ip = false) => {
     let transporter = new Transporter(ip ? host = await ip() : false)
+    await transporter.openConnection();
     return transporter
 }
 
