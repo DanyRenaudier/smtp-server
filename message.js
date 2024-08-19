@@ -14,7 +14,7 @@ const { transporterInstance } = require('./Models/Transporter');
         }
         // transporter.send(envelope,message);
     } catch (error) {
-        console.error(`Error: ${error}`)
+        console.error(`${error}`)
     }
     
 })();

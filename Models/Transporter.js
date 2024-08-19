@@ -9,6 +9,8 @@ class Transporter {
             key: readFileSync("./credentials/client/client.key"),
             cert: readFileSync('./credentials/client/client.crt'),
             // ca: readFileSync('./credentials/client/client.csr'),
+            user:'admin',
+            pass:'admin'
         }
     }
 
@@ -43,17 +45,23 @@ class Transporter {
     }
 
     async openConnection() {
-        try {
-            //put the connection / login into a promise to be fullfilled before attempting to send the email 
-            this.connection.connect(() => {
-                console.log('Connection succeed!')
-                this.connection.login(this.credentials, () => {
-                    console.log('Connection Authenticated');
-                })
-            })
-        } catch (error) {
-            throw new Error(error);
-        }
+        return new Promise((resolve, reject) => {
+            try {
+                this.connection.connect((err) => {
+                    if (err) return reject(err)
+                    console.log('Connection succeed!')
+                    console.log(this.credentials)
+                    this.connection.login(this.credentials, (err) => {
+                        if (err) return reject(err)
+                        console.log('Connection Authenticated');
+                        resolve();
+                    })
+
+                });
+            } catch (error) {
+                throw new Error(error);
+            }
+        })
     }
 
     // closeConenection() {
