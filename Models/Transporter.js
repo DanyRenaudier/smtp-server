@@ -1,4 +1,3 @@
-
 const { readFileSync } = require('node:fs');
 const SMTPConnection = require("nodemailer/lib/smtp-connection");
 
@@ -10,10 +9,9 @@ class Transporter {
             key: readFileSync("./credentials/client/client.key"),
             cert: readFileSync('./credentials/client/client.crt'),
             // ca: readFileSync('./credentials/client/client.csr'),
+            user:'admin',
+            pass:'admin'
         }
-
-        //Methods call
-        this.openConnection()
     }
 
     options(ip) {
@@ -34,25 +32,36 @@ class Transporter {
         }
     }
 
-    send(envelope,message) {
-        this.connection.send(envelope,message ,(err)=>{
-            if(err) console.log(`Message couldn't be delivered due to ${err}`)
-            
-            console.log(info);
-        })
+    send(envelope, message) {
+        try {
+            this.connection.send(envelope, message, (info) => {
+                console.log(info)
+            })
+        }
+        catch (error) {
+            console.log(error)
+            throw new Error(`Check the logs, message couldn't be sent :(`)
+        }
     }
 
-    openConnection() {
-        try {
-            this.connection.connect(() => {
-                console.log('Connection succeed!')
-                this.connection.login(this.credentials, () => {
-                    console.log('Connection Authenticated');
-                })
-            })
-        } catch (error) {
-            throw new Error(error);
-        }
+    async openConnection() {
+        return new Promise((resolve, reject) => {
+            try {
+                this.connection.connect((err) => {
+                    if (err) return reject(err)
+                    console.log('Connection succeed!')
+                    console.log(this.credentials)
+                    this.connection.login(this.credentials, (err) => {
+                        if (err) return reject(err)
+                        console.log('Connection Authenticated');
+                        resolve();
+                    })
+
+                });
+            } catch (error) {
+                throw new Error(error);
+            }
+        })
     }
 
     // closeConenection() {
@@ -62,6 +71,7 @@ class Transporter {
 
 transporterInstance = async (ip = false) => {
     let transporter = new Transporter(ip ? host = await ip() : false)
+    await transporter.openConnection();
     return transporter
 }
 
