@@ -50,7 +50,6 @@ class Transporter {
                 this.connection.connect((err) => {
                     if (err) return reject(err)
                     console.log('Connection succeed!')
-                    console.log(this.credentials)
                     this.connection.login(this.credentials, (err) => {
                         if (err) return reject(err)
                         console.log('Connection Authenticated');
