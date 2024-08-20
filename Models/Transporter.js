@@ -34,9 +34,13 @@ class Transporter {
         }
     }
 
-    // send() {
-
-    // }
+    send(envelope,message) {
+        this.connection.send(envelope,message ,(err)=>{
+            if(err) console.log(`Message couldn't be delivered due to ${err}`)
+            
+            console.log(info);
+        })
+    }
 
     openConnection() {
         try {
