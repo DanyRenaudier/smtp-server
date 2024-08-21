@@ -35,7 +35,7 @@ class Transporter {
     send(envelope, message) {
         try {
             this.connection.send(envelope, message, (err,info) => {
-                if(err) console.error(err);
+                if(err) return console.error(err);
                 console.log(info)
             })
         }
