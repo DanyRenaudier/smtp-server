@@ -9,8 +9,8 @@ class Transporter {
             key: readFileSync("./credentials/client/client.key"),
             cert: readFileSync('./credentials/client/client.crt'),
             // ca: readFileSync('./credentials/client/client.csr'),
-            user:'admin',
-            pass:'admin'
+            user:process.env.user,
+            pass:process.env.pw
         }
     }
 

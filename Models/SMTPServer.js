@@ -14,7 +14,14 @@ class SMTPServer {
             key: readFileSync("./credentials/server/server.key"),
             cert: readFileSync('./credentials/server/server.crt'),
             ca: readFileSync('./credentials/server/server.csr'),
-            size: 500
+            size: 500,
+            authmethods:['PLAIN'],
+            onAuth(auth,session,callback){
+                if(auth.username !== process.env.user || auth.password !== process.env.pw && auth.method == 'PLAIN'){
+                    return callback(new Error('Invalid username or password'))
+                }
+                callback(null, { user: auth.username });
+            }
         }
     }
 
