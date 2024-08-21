@@ -9,10 +9,10 @@ const { transporterInstance } = require('./Models/Transporter');
         let message = await Message()
         let envelope={
             from:`${process.env.from}`,
-            to:`${process.env.to}`,
-            
+            to:`${process.env.to}`.split(' '),
+            size:500
         }
-        // transporter.send(envelope,message);
+        transporter.send(envelope,message);
     } catch (error) {
         console.error(`${error}`)
     }
