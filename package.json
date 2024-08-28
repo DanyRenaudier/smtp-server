@@ -11,7 +11,8 @@
   "version": "1.0.0",
   "main": "mailer.js",
   "scripts": {
-    "start": ""
+    "client": "nodemon message",
+    "server": "nodemon smtpserver"
   },
   "keywords": [],
   "author": "",
