@@ -1,6 +1,5 @@
 require('dotenv').config()
 const  {Message} = require('./helpers/readMessage')
-const { ip } = require('./helpers/mailer')
 const { transporterInstance } = require('./Models/Transporter');
 
 (async () => {
